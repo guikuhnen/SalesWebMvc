@@ -4,11 +4,17 @@
 	ViewData["Title"] = "Departments";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container mb-3">
+	<div class="row align-items-center">
+		<div class="col">
+			<h1>@ViewData["Title"]</h1>
+		</div>
+		<div class="col">
+				<a type="button" class="btn btn-primary float-right" asp-action="Create">Create New</a>
+		</div>
+	</div>
+</div>
 
-<p>
-	<a asp-action="Create">Create New</a>
-</p>
 <table class="table">
 	<thead>
 		<tr>

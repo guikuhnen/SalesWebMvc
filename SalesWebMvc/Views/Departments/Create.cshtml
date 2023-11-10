@@ -4,10 +4,19 @@
 	ViewData["Title"] = "Create Department";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container mb-3">
+	<div class="row align-items-center">
+		<div class="col">
+			<h1>@ViewData["Title"]</h1>
+		</div>
+		<div class="col">
+			<a type="button" class="btn btn-secondary float-right" asp-action="Index">Back to List</a>
+		</div>
+	</div>
+</div>
 
-<h4>Department</h4>
 <hr />
+
 <div class="row">
 	<div class="col-md-4">
 		<form asp-action="Create">
@@ -22,10 +31,6 @@
 			</div>
 		</form>
 	</div>
-</div>
-
-<div>
-	<a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
