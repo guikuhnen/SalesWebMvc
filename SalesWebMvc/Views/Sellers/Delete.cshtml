@@ -21,7 +21,7 @@
 <div>
 	@{
 		string birthDate = Model.BirthDate.ToShortDateString();
-		string baseSalary = Model.BaseSalary.ToString("F2", System.Globalization.CultureInfo.InvariantCulture);
+		string baseSalary = "$ " + Model.BaseSalary.ToString("F2", System.Globalization.CultureInfo.InvariantCulture);
 
 		<dl class="row">
 			<dt class="col-sm-2">

@@ -37,7 +37,7 @@
 		@foreach (var item in Model)
 		{
 			string birthDate = item.BirthDate.ToShortDateString();
-			string baseSalary = item.BaseSalary.ToString("F2", System.Globalization.CultureInfo.InvariantCulture);
+			string baseSalary = "$ " + item.BaseSalary.ToString("F2", System.Globalization.CultureInfo.InvariantCulture);
 
 			<tr>
 				<td>

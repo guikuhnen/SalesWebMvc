@@ -39,8 +39,18 @@
             </div>
             <div class="form-group">
                 <label asp-for="BaseSalary" class="control-label"></label>
-                <input asp-for="BaseSalary" class="form-control" type="number" min="0.00" max="10000.00" step="0.01" />
-                <span asp-validation-for="BaseSalary" class="text-danger"></span>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input asp-for="BaseSalary" class="form-control" type="number" />
+                        <div class="input-group-append">
+                            <span class="input-group-text">.00</span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="BaseSalary" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-success" />
