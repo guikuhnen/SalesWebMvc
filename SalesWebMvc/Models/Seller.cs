@@ -9,13 +9,16 @@ namespace SalesWebMvc.Models
 	public class Seller
 	{
 		public int Id { get; set; }
+		[Required]
 		public string Name { get; set; }
+		[Required]
 		public string Email {  get; set; }
         [Display(Name = "Birth Date")]
         public DateTime BirthDate { get; set; }
         [Display(Name = "Base Salary")]
         public double BaseSalary { get; set; }
 		public Department Department { get; set; }
+		public int DepartmentId { get; set; }
 		public ICollection<SalesRecord> Sales { get; private set; } = new List<SalesRecord>();
 
 		public Seller () { }

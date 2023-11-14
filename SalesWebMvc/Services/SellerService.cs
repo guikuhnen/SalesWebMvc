@@ -36,6 +36,8 @@ namespace SalesWebMvc.Services
 
         public async Task Add(Seller seller)
         {
+			// TODO - Temporary, allows to insert a seller
+			seller.Department = _context.Department.First();
             _context.Add(seller);
 
             await _context.SaveChangesAsync();

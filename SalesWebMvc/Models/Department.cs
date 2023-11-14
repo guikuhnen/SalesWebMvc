@@ -1,6 +1,6 @@
-﻿using SalesWebMvc.Models.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace SalesWebMvc.Models
@@ -8,6 +8,7 @@ namespace SalesWebMvc.Models
 	public class Department
 	{
 		public int Id { get; set; }
+		[Required]
 		public string Name { get; set; }
 		public ICollection<Seller> Sellers { get; private set; } = new List<Seller>();
 
