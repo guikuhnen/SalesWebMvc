@@ -23,10 +23,17 @@ namespace SalesWebMvc.Services
             return await _context.Seller.ToListAsync();
         }
 
-        public async Task<Seller> FindById(int id)
+		public async Task<ICollection<Seller>> FindAllWithDepartment()
+		{
+			return await _context.Seller
+				.Include(x => x.Department)
+                .ToListAsync();
+		}
+
+		public async Task<Seller> FindById(int id)
         {
             var seller = await _context.Seller
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (seller == null)
                 throw new InvalidOperationException("Unable to find data for the given ID!");
@@ -34,10 +41,20 @@ namespace SalesWebMvc.Services
             return seller;
         }
 
-        public async Task Add(Seller seller)
+		public async Task<Seller> FindByIdWithDepartment(int id)
+		{
+			var seller = await _context.Seller
+                .Include(x => x.Department)
+				.FirstOrDefaultAsync(y => y.Id == id);
+
+			if (seller == null)
+				throw new InvalidOperationException("Unable to find data for the given ID!");
+
+			return seller;
+		}
+
+		public async Task Add(Seller seller)
         {
-			// TODO - Temporary, allows to insert a seller
-			seller.Department = _context.Department.First();
             _context.Add(seller);
 
             await _context.SaveChangesAsync();

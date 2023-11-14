@@ -11,16 +11,18 @@ namespace SalesWebMvc.Controllers
     public class SellersController : Controller
     {
         private readonly SellerService _sellerService;
+		private readonly DepartmentService _departmentService;
 
-        public SellersController(SellerService sellerService)
+		public SellersController(SellerService sellerService, DepartmentService departmentService)
         {
             _sellerService = sellerService;
+            _departmentService = departmentService;
         }
 
         // GET: Sellers
         public async Task<IActionResult> Index()
         {
-            return View(await _sellerService.FindAll());
+            return View(await _sellerService.FindAllWithDepartment());
         }
 
         // GET: Sellers/Details/5
@@ -33,7 +35,7 @@ namespace SalesWebMvc.Controllers
                     return NotFound();
                 }
 
-                var seller = await _sellerService.FindById(id.Value);
+                var seller = await _sellerService.FindByIdWithDepartment(id.Value);
 
                 return View(seller);
             }
@@ -46,13 +48,16 @@ namespace SalesWebMvc.Controllers
         // GET: Sellers/Create
         public IActionResult Create()
         {
-            return View();
+			var departments = _departmentService.FindAll();
+			var viewModel = new SellerViewModel { Departments = departments.Result };
+
+			return View(viewModel);
         }
 
         // POST: Sellers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Email,BirthDate,BaseSalary")] Seller seller)
+        public async Task<IActionResult> Create([Bind("Id,Name,Email,BirthDate,BaseSalary,DepartmentId")] Seller seller)
         {
             if (ModelState.IsValid)
             {
@@ -75,8 +80,10 @@ namespace SalesWebMvc.Controllers
                 }
 
                 var seller = await _sellerService.FindById(id.Value);
+				var departments = _departmentService.FindAll();
+				var viewModel = new SellerViewModel { Seller = seller, Departments = departments.Result };
 
-                return View(seller);
+				return View(viewModel);
             }
             catch (InvalidOperationException)
             {
@@ -87,7 +94,7 @@ namespace SalesWebMvc.Controllers
         // POST: Sellers/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,BirthDate,BaseSalary")] Seller seller)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,BirthDate,BaseSalary,DepartmentId")] Seller seller)
         {
             try
             {
@@ -121,9 +128,9 @@ namespace SalesWebMvc.Controllers
                     return NotFound();
                 }
 
-                var seller = await _sellerService.FindById(id.Value);
+				var seller = await _sellerService.FindByIdWithDepartment(id.Value);
 
-                return View(seller);
+				return View(seller);
             }
             catch (InvalidOperationException)
             {

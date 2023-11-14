@@ -1,4 +1,4 @@
-﻿@model SalesWebMvc.Models.Seller
+﻿@model SalesWebMvc.Models.ViewModels.SellerViewModel
 
 @{
 	ViewData["Title"] = "Create Seller";
@@ -22,34 +22,41 @@
 		<form asp-action="Create">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<div class="form-group">
-				<label asp-for="Name" class="control-label"></label>
-				<input asp-for="Name" class="form-control" />
-				<span asp-validation-for="Name" class="text-danger"></span>
+				<label asp-for="Seller.Name" class="control-label"></label>
+				<input asp-for="Seller.Name" class="form-control" />
+				<span asp-validation-for="Seller.Name" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Email" class="control-label"></label>
-				<input asp-for="Email" class="form-control" />
-				<span asp-validation-for="Email" class="text-danger"></span>
+				<label asp-for="Seller.Email" class="control-label"></label>
+				<input asp-for="Seller.Email" class="form-control" />
+				<span asp-validation-for="Seller.Email" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="BirthDate" class="control-label"></label>
-				<input asp-for="BirthDate" class="form-control" type="date" />
-				<span asp-validation-for="BirthDate" class="text-danger"></span>
+				<label asp-for="Seller.BirthDate" class="control-label"></label>
+				<input asp-for="Seller.BirthDate" class="form-control" type="date" />
+				<span asp-validation-for="Seller.BirthDate" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="BaseSalary" class="control-label"></label>
+				<label asp-for="Seller.BaseSalary" class="control-label"></label>
 				<div class="form-group">
 					<div class="input-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text">$</span>
 						</div>
-						<input asp-for="BaseSalary" class="form-control" type="number" />
+						<input asp-for="Seller.BaseSalary" class="form-control" type="number" />
 						<div class="input-group-append">
 							<span class="input-group-text">.00</span>
 						</div>
 					</div>
-					<span asp-validation-for="BaseSalary" class="text-danger"></span>
+					<span asp-validation-for="Seller.BaseSalary" class="text-danger"></span>
 				</div>
+			</div>
+			<div class="form-group">
+				<label asp-for="Seller.DepartmentId" class="control-label"></label>
+				<select asp-for="Seller.DepartmentId" asp-items="@(new SelectList(Model.Departments,"Id","Name"))" class="form-control custom-select">
+					<option disabled selected>Select</option>
+				</select>
+				<span asp-validation-for="Seller.DepartmentId" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<input type="submit" value="Create" class="btn btn-success" />
