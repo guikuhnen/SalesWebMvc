@@ -65,7 +65,10 @@ namespace SalesWebMvc.Controllers
 				return RedirectToAction(nameof(Index));
 			}
 
-			return View(seller);
+			var departments = _departmentService.FindAll();
+			SellerViewModel viewModel = new SellerViewModel { Seller = seller, Departments = departments.Result };
+
+			return View(viewModel);
 		}
 
 		// GET: Sellers/Edit/5
@@ -101,11 +104,14 @@ namespace SalesWebMvc.Controllers
 				if (ModelState.IsValid)
 				{
 					await _sellerService.Update(seller);
-
+				
 					return RedirectToAction(nameof(Index));
 				}
 
-				return View(seller);
+				var departments = _departmentService.FindAll();
+				SellerViewModel viewModel = new SellerViewModel { Seller = seller, Departments = departments.Result };
+
+				return View(viewModel);
 			}
 			catch (ApplicationException ex)
             {
