@@ -18,43 +18,38 @@
 <hr />
 
 <div>
-	@{
-		string birthDate = Model.BirthDate.ToShortDateString();
-		string baseSalary = "$ " + Model.BaseSalary.ToString("F2", System.Globalization.CultureInfo.InvariantCulture);
-
-		<dl class="row">
-			<dt class="col-sm-2">
-				@Html.DisplayNameFor(model => model.Name)
-			</dt>
-			<dd class="col-sm-10">
-				@Html.DisplayFor(model => model.Name)
-			</dd>
-			<dt class="col-sm-2">
-				@Html.DisplayNameFor(model => model.Email)
-			</dt>
-			<dd class="col-sm-10">
-				@Html.DisplayFor(model => model.Email)
-			</dd>
-			<dt class="col-sm-2">
-				@Html.DisplayNameFor(model => model.BirthDate)
-			</dt>
-			<dd class="col-sm-10">
-				@birthDate
-			</dd>
-			<dt class="col-sm-2">
-				@Html.DisplayNameFor(model => model.BaseSalary)
-			</dt>
-			<dd class="col-sm-10">
-				@baseSalary
-			</dd>
-			<dt class="col-sm-2">
-				@Html.DisplayNameFor(model => model.Department)
-			</dt>
-			<dd class="col-sm-10">
-				@Html.DisplayFor(model => model.Department.Name)
-			</dd>
-		</dl>
-	}
+	<dl class="row">
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Name)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Name)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Email)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Email)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.BirthDate)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.BirthDate)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.BaseSalary)
+		</dt>
+		<dd class="col-sm-10">
+			$ @Html.DisplayFor(model => model.BaseSalary)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Department)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Department.Name)
+		</dd>
+	</dl>
 </div>
 <div>
 	<a type="button" class="btn btn-success" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>

@@ -39,9 +39,6 @@
 	<tbody>
 		@foreach (var item in Model)
 		{
-			string birthDate = item.BirthDate.ToShortDateString();
-			string baseSalary = "$ " + item.BaseSalary.ToString("F2", System.Globalization.CultureInfo.InvariantCulture);
-
 			<tr>
 				<td>
 					@Html.DisplayFor(modelItem => item.Name)
@@ -50,10 +47,10 @@
 					@Html.DisplayFor(modelItem => item.Email)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => birthDate)
+					@Html.DisplayFor(modelItem => item.BirthDate)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => baseSalary)
+					$ @Html.DisplayFor(modelItem => item.BaseSalary)
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.Department.Name)
