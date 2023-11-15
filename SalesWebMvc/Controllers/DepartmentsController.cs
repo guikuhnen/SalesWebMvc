@@ -21,7 +21,7 @@ namespace SalesWebMvc.Controllers
 		// GET: Departments
 		public async Task<IActionResult> Index()
 		{
-			return View(await _departmentService.FindAll());
+			return View(await _departmentService.FindAllAsync());
 		}
 
 		// GET: Departments/Details/5
@@ -32,7 +32,7 @@ namespace SalesWebMvc.Controllers
 
             try
 			{
-				var department = await _departmentService.FindById(id.Value);
+				var department = await _departmentService.FindByIdAsync(id.Value);
 
 				return View(department);
 			}
@@ -55,7 +55,7 @@ namespace SalesWebMvc.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await _departmentService.Add(department);
+				await _departmentService.AddAsync(department);
 
 				return RedirectToAction(nameof(Index));
 			}
@@ -71,7 +71,7 @@ namespace SalesWebMvc.Controllers
 
             try
 			{
-				var department = await _departmentService.FindById(id.Value);
+				var department = await _departmentService.FindByIdAsync(id.Value);
 
 				return View(department);
 			}
@@ -93,7 +93,7 @@ namespace SalesWebMvc.Controllers
 			{
 				if (ModelState.IsValid)
 				{
-					await _departmentService.Update(department);
+					await _departmentService.UpdateAsync(department);
 
 					return RedirectToAction(nameof(Index));
 				}
@@ -114,7 +114,7 @@ namespace SalesWebMvc.Controllers
 
             try
 			{
-				var department = await _departmentService.FindById(id.Value);
+				var department = await _departmentService.FindByIdAsync(id.Value);
 
 				return View(department);
 			}
@@ -129,7 +129,7 @@ namespace SalesWebMvc.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
-			await _departmentService.Delete(id);
+			await _departmentService.DeleteAsync(id);
 
 			return RedirectToAction(nameof(Index));
 		}

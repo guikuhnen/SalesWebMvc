@@ -17,19 +17,19 @@ namespace SalesWebMvc.Services
 			_context = context;
 		}
 
-		public async Task<ICollection<Seller>> FindAll()
+		public async Task<ICollection<Seller>> FindAllAsync()
 		{
 			return await _context.Seller.ToListAsync();
 		}
 
-		public async Task<ICollection<Seller>> FindAllWithDepartment()
+		public async Task<ICollection<Seller>> FindAllWithDepartmentAsync()
 		{
 			return await _context.Seller
 				.Include(x => x.Department)
 				.ToListAsync();
 		}
 
-		public async Task<Seller> FindById(int id)
+		public async Task<Seller> FindByIdAsync(int id)
 		{
 			var seller = await _context.Seller
 				.FirstOrDefaultAsync(x => x.Id == id);
@@ -37,7 +37,7 @@ namespace SalesWebMvc.Services
 			return seller ?? throw new NotFoundException("Unable to find Seller with provided ID!");
 		}
 
-		public async Task<Seller> FindByIdWithDepartment(int id)
+		public async Task<Seller> FindByIdWithDepartmentAsync(int id)
 		{
 			var seller = await _context.Seller
 				.Include(x => x.Department)
@@ -46,16 +46,17 @@ namespace SalesWebMvc.Services
 			return seller ?? throw new NotFoundException("Unable to find Seller with provided ID!");
 		}
 
-		public async Task Add(Seller seller)
+		public async Task AddAsync(Seller seller)
 		{
 			_context.Add(seller);
 
 			await _context.SaveChangesAsync();
 		}
 
-		public async Task Update(Seller seller)
+		public async Task UpdateAsync(Seller seller)
 		{
-			if (!SellerExists(seller.Id))
+			bool hasAny = await SellerExistsAsync(seller.Id);
+			if (!hasAny)
 				throw new NotFoundException("Seller not found!");
 
 			try
@@ -70,14 +71,14 @@ namespace SalesWebMvc.Services
 			}
 		}
 
-		private bool SellerExists(int id)
+		private async Task<bool> SellerExistsAsync(int id)
 		{
-			return _context.Seller.Any(x => x.Id == id);
+			return await _context.Seller.AnyAsync(x => x.Id == id);
 		}
 
-		public async Task Delete(int id)
+		public async Task DeleteAsync(int id)
 		{
-			var seller = await FindById(id);
+			var seller = await FindByIdAsync(id);
 
 			_context.Seller.Remove(seller);
 

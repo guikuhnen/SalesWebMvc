@@ -2,7 +2,6 @@
 using SalesWebMvc.Data;
 using SalesWebMvc.Models;
 using SalesWebMvc.Services.Exceptions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,13 +17,13 @@ namespace SalesWebMvc.Services
 			_context = context;
 		}
 
-		public async Task<ICollection<Department>> FindAll()
+		public async Task<ICollection<Department>> FindAllAsync()
 		{
 			return await _context.Department.OrderBy(x => x.Name).ToListAsync();
 		}
 
 
-		public async Task<Department> FindById(int id)
+		public async Task<Department> FindByIdAsync(int id)
 		{
 			var department = await _context.Department
 				.FirstOrDefaultAsync(m => m.Id == id);
@@ -32,16 +31,17 @@ namespace SalesWebMvc.Services
 			return department ?? throw new NotFoundException("Unable to find Department with provided ID!");
 		}
 
-		public async Task Add(Department department)
+		public async Task AddAsync(Department department)
 		{
 			_context.Add(department);
 
 			await _context.SaveChangesAsync();
 		}
 
-		public async Task Update(Department department)
+		public async Task UpdateAsync(Department department)
 		{
-			if (!DepartmentExists(department.Id))
+			bool hasAny = await DepartmentExistsAsync(department.Id);
+			if (!hasAny)
 				throw new NotFoundException("Department not found!");
 
 			try
@@ -56,14 +56,14 @@ namespace SalesWebMvc.Services
 			}
 		}
 
-		private bool DepartmentExists(int id)
+		private async Task<bool> DepartmentExistsAsync(int id)
 		{
-			return _context.Department.Any(x => x.Id == id);
+			return await _context.Department.AnyAsync(x => x.Id == id);
 		}
 
-		public async Task Delete(int id)
+		public async Task DeleteAsync(int id)
 		{
-			var department = await FindById(id);
+			var department = await FindByIdAsync(id);
 
 			_context.Department.Remove(department);
 
