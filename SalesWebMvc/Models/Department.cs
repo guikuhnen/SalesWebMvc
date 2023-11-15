@@ -8,8 +8,10 @@ namespace SalesWebMvc.Models
 	public class Department
 	{
 		public int Id { get; set; }
+
 		[Required]
 		public string Name { get; set; }
+
 		public ICollection<Seller> Sellers { get; private set; } = new List<Seller>();
 
 		public Department() { }
