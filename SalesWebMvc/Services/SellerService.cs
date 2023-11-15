@@ -1,97 +1,87 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SalesWebMvc.Data;
 using SalesWebMvc.Models;
-using System;
+using SalesWebMvc.Services.Exceptions;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace SalesWebMvc.Services
 {
-    public class SellerService
-    {
-        private readonly SalesWebMvcContext _context;
+	public class SellerService
+	{
+		private readonly SalesWebMvcContext _context;
 
-        public SellerService(SalesWebMvcContext context)
-        {
-            _context = context;
-        }
+		public SellerService(SalesWebMvcContext context)
+		{
+			_context = context;
+		}
 
-        public async Task<ICollection<Seller>> FindAll()
-        {
-            return await _context.Seller.ToListAsync();
-        }
+		public async Task<ICollection<Seller>> FindAll()
+		{
+			return await _context.Seller.ToListAsync();
+		}
 
 		public async Task<ICollection<Seller>> FindAllWithDepartment()
 		{
 			return await _context.Seller
 				.Include(x => x.Department)
-                .ToListAsync();
+				.ToListAsync();
 		}
 
 		public async Task<Seller> FindById(int id)
-        {
-            var seller = await _context.Seller
-                .FirstOrDefaultAsync(x => x.Id == id);
+		{
+			var seller = await _context.Seller
+				.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (seller == null)
-                throw new InvalidOperationException("Unable to find data for the given ID!");
-
-            return seller;
-        }
+			return seller ?? throw new NotFoundException("Unable to find Seller with provided ID!");
+		}
 
 		public async Task<Seller> FindByIdWithDepartment(int id)
 		{
 			var seller = await _context.Seller
-                .Include(x => x.Department)
+				.Include(x => x.Department)
 				.FirstOrDefaultAsync(y => y.Id == id);
 
-			if (seller == null)
-				throw new InvalidOperationException("Unable to find data for the given ID!");
-
-			return seller;
+			return seller ?? throw new NotFoundException("Unable to find Seller with provided ID!");
 		}
 
 		public async Task Add(Seller seller)
-        {
-            _context.Add(seller);
+		{
+			_context.Add(seller);
 
-            await _context.SaveChangesAsync();
-        }
+			await _context.SaveChangesAsync();
+		}
 
-        public async Task Edit(Seller seller)
-        {
-            try
-            {
-                _context.Update(seller);
+		public async Task Update(Seller seller)
+		{
+			if (!SellerExists(seller.Id))
+				throw new NotFoundException("Seller not found!");
 
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SellerExists(seller.Id))
-                {
-                    throw new InvalidOperationException("Unable to find data for the given ID!");
-                }
-                else
-                {
-                    throw;
-                }
-            }
-        }
-        private bool SellerExists(int id)
-        {
-            return _context.Seller.Any(e => e.Id == id);
-        }
+			try
+			{
+				_context.Update(seller);
 
-        public async Task Delete(int id)
-        {
-            var seller = await FindById(id);
+				await _context.SaveChangesAsync();
+			}
+			catch (DbUpdateConcurrencyException ex)
+			{
+				throw new DbConcurrencyException(ex.Message);
+			}
+		}
 
-            _context.Seller.Remove(seller);
+		private bool SellerExists(int id)
+		{
+			return _context.Seller.Any(x => x.Id == id);
+		}
 
-            await _context.SaveChangesAsync();
-        }
-    }
+		public async Task Delete(int id)
+		{
+			var seller = await FindById(id);
+
+			_context.Seller.Remove(seller);
+
+			await _context.SaveChangesAsync();
+		}
+	}
 }

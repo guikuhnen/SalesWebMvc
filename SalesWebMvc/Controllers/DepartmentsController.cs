@@ -10,10 +10,11 @@ using SalesWebMvc.Data;
 using SalesWebMvc.Models;
 using SalesWebMvc.Models.ViewModels;
 using SalesWebMvc.Services;
+using SalesWebMvc.Services.Exceptions;
 
 namespace SalesWebMvc.Controllers
 {
-    public class DepartmentsController : Controller
+	public class DepartmentsController : Controller
 	{
 		private readonly DepartmentService _departmentService;
 
@@ -24,41 +25,39 @@ namespace SalesWebMvc.Controllers
 
 		// GET: Departments
 		public async Task<IActionResult> Index()
-        {
-            return View(await _departmentService.FindAll());
-        }
+		{
+			return View(await _departmentService.FindAll());
+		}
 
-        // GET: Departments/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
+		// GET: Departments/Details/5
+		public async Task<IActionResult> Details(int? id)
+		{
+			if (id == null)
+				return BadRequest();
+
 			try
 			{
-				if (id == null)
-				{
-					return NotFound();
-				}
+				var department = await _departmentService.FindById(id.Value);
 
-				var seller = await _departmentService.FindById(id.Value);
-
-				return View(seller);
+				return View(department);
 			}
-			catch (InvalidOperationException)
+			catch (NotFoundException)
 			{
 				return NotFound();
 			}
 		}
 
-        // GET: Departments/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+		// GET: Departments/Create
+		public IActionResult Create()
+		{
+			return View();
+		}
 
-        // POST: Departments/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Department department)
-        {
+		// POST: Departments/Create
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Create([Bind("Id,Name")] Department department)
+		{
 			if (ModelState.IsValid)
 			{
 				await _departmentService.Add(department);
@@ -69,78 +68,76 @@ namespace SalesWebMvc.Controllers
 			return View(department);
 		}
 
-        // GET: Departments/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
+		// GET: Departments/Edit/5
+		public async Task<IActionResult> Edit(int? id)
+		{
+			if (id == null)
+				return BadRequest();
+
 			try
 			{
-				if (id == null)
-				{
-					return NotFound();
-				}
+				var department = await _departmentService.FindById(id.Value);
 
-				var seller = await _departmentService.FindById(id.Value);
-
-				return View(seller);
+				return View(department);
 			}
-			catch (InvalidOperationException)
+			catch (NotFoundException)
 			{
 				return NotFound();
 			}
 		}
 
-        // POST: Departments/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Department department)
-        {
+		// POST: Departments/Edit/5
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Department department)
+		{
+			if (id != department.Id)
+				return BadRequest();
+
 			try
 			{
-				if (id != department.Id)
-				{
-					return NotFound();
-				}
-
 				if (ModelState.IsValid)
 				{
-					await _departmentService.Edit(department);
+					await _departmentService.Update(department);
 
 					return RedirectToAction(nameof(Index));
 				}
 
 				return View(department);
 			}
-			catch (Exception)
+			catch (NotFoundException)
 			{
-				return Error();
+				return NotFound();
+			}
+			catch (DbConcurrencyException)
+			{
+				return BadRequest();
 			}
 		}
 
-        // GET: Departments/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
+		// GET: Departments/Delete/5
+		public async Task<IActionResult> Delete(int? id)
+		{
+			if (id == null)
+				return BadRequest();
+
 			try
 			{
-				if (id == null)
-				{
-					return NotFound();
-				}
+				var department = await _departmentService.FindById(id.Value);
 
-				var seller = await _departmentService.FindById(id.Value);
-
-				return View(seller);
+				return View(department);
 			}
-			catch (InvalidOperationException)
+			catch (NotFoundException)
 			{
 				return NotFound();
 			}
 		}
 
-        // POST: Departments/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
+		// POST: Departments/Delete/5
+		[HttpPost, ActionName("Delete")]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> DeleteConfirmed(int id)
+		{
 			await _departmentService.Delete(id);
 
 			return RedirectToAction(nameof(Index));

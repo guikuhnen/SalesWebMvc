@@ -8,8 +8,5 @@ namespace SalesWebMvc.Models.ViewModels
     {
         public Seller Seller { get; set; }
         public ICollection<Department> Departments { get; set; }
-
-        [Display(Name = "Department Name")]
-        public string SellerDepartmentName { get; set; }
     }
 }
