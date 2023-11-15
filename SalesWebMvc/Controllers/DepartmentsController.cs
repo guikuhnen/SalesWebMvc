@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using SalesWebMvc.Data;
 using SalesWebMvc.Models;
 using SalesWebMvc.Models.ViewModels;
 using SalesWebMvc.Services;
@@ -33,19 +28,19 @@ namespace SalesWebMvc.Controllers
 		public async Task<IActionResult> Details(int? id)
 		{
 			if (id == null)
-				return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "Id not provided!" });
 
-			try
+            try
 			{
 				var department = await _departmentService.FindById(id.Value);
 
 				return View(department);
 			}
-			catch (NotFoundException)
-			{
-				return NotFound();
-			}
-		}
+			catch (NotFoundException ex)
+            {
+                return RedirectToAction(nameof(Error), new { message = ex.Message });
+            }
+        }
 
 		// GET: Departments/Create
 		public IActionResult Create()
@@ -72,19 +67,19 @@ namespace SalesWebMvc.Controllers
 		public async Task<IActionResult> Edit(int? id)
 		{
 			if (id == null)
-				return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "Id not provided!" });
 
-			try
+            try
 			{
 				var department = await _departmentService.FindById(id.Value);
 
 				return View(department);
 			}
-			catch (NotFoundException)
-			{
-				return NotFound();
-			}
-		}
+			catch (NotFoundException ex)
+            {
+                return RedirectToAction(nameof(Error), new { message = ex.Message });
+            }
+        }
 
 		// POST: Departments/Edit/5
 		[HttpPost]
@@ -92,9 +87,9 @@ namespace SalesWebMvc.Controllers
 		public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Department department)
 		{
 			if (id != department.Id)
-				return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "Id mismatch!" });
 
-			try
+            try
 			{
 				if (ModelState.IsValid)
 				{
@@ -105,33 +100,29 @@ namespace SalesWebMvc.Controllers
 
 				return View(department);
 			}
-			catch (NotFoundException)
-			{
-				return NotFound();
-			}
-			catch (DbConcurrencyException)
-			{
-				return BadRequest();
-			}
-		}
+			catch (ApplicationException ex)
+            {
+                return RedirectToAction(nameof(Error), new { message = ex.Message });
+            }
+        }
 
 		// GET: Departments/Delete/5
 		public async Task<IActionResult> Delete(int? id)
 		{
 			if (id == null)
-				return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "Id not provided!" });
 
-			try
+            try
 			{
 				var department = await _departmentService.FindById(id.Value);
 
 				return View(department);
 			}
-			catch (NotFoundException)
-			{
-				return NotFound();
-			}
-		}
+			catch (NotFoundException ex)
+            {
+                return RedirectToAction(nameof(Error), new { message = ex.Message }); ;
+            }
+        }
 
 		// POST: Departments/Delete/5
 		[HttpPost, ActionName("Delete")]
@@ -143,10 +134,9 @@ namespace SalesWebMvc.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
-		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-		public IActionResult Error()
-		{
-			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-		}
-	}
+        public IActionResult Error(string message)
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, Message = message });
+        }
+    }
 }
