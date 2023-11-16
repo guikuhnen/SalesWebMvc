@@ -1,8 +1,51 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+	<h1 class="display-4 mb-5">Welcome to SalesWebMvc</h1>
+	<h4>Modules</h4>
+</div>
+
+<hr />
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<a class="text-primary" asp-area="" asp-controller="Departments" asp-action="Index">
+				<div class="card border-primary mb-3">
+					<h3 class="card-header">Departments</h3>
+					<div class="card-body">
+						<p class="card-text">
+							Monitor the departments.
+						</p>
+					</div>
+				</div>
+			</a>
+		</div>
+		<div class="col-md-4">
+			<a class="text-primary" asp-area="" asp-controller="Sellers" asp-action="Index">
+				<div class="card border-primary mb-3">
+					<h3 class="card-header">Sellers</h3>
+					<div class="card-body">
+						<p class="card-text">
+							Registration and consultation of sellers.
+						</p>
+					</div>
+				</div>
+			</a>
+		</div>
+		<div class="col-md-4">
+			<a class="text-primary" asp-area="" asp-controller="SalesRecords" asp-action="Index">
+				<div class="card border-primary mb-3">
+					<h3 class="card-header">Sales Records</h3>
+					<div class="card-body">
+						<p class="card-text">
+							Find sales by date or department.
+						</p>
+					</div>
+				</div>
+			</a>
+		</div>
+	</div>
 </div>

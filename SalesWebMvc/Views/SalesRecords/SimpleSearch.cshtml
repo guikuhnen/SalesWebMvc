@@ -15,67 +15,85 @@
 	</div>
 </div>
 
-<nav class="navbar navbar-dark bg-primary border-bottom box-shadow mb-3 text-white rounded">
-	<form class="form-inline my-2 my-lg-0" role="search">
-		<div class="form-group">
-			<label class="mr-sm-2" for="minDate">Min Date</label>
-			<input type="date" class="form-control mr-sm-2" name="minDate" value=@ViewData["MinDate"] />
+<div class="card mb-3">
+	<div class="card-header text-white bg-primary rounded">
+		<div class="row">
+			<div class="col-md-12">
+				<form role="search">
+					<div class="row align-items-end">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label class="control-label" for="minDate">Min Date</label>
+								<input type="date" class="form-control" name="minDate" value=@ViewData["MinDate"] />
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label class="control-label" for="maxDate">Max Date</label>
+								<input type="date" class="form-control" name="maxDate" value=@ViewData["MaxDate"] />
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<input type="submit" value="Filter" class="btn btn-info" />
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
 		</div>
-		<div class="form-group">
-			<label class="mr-sm-2" for="maxDate">Max Date</label>
-			<input type="date" class="form-control mr-sm-2" name="maxDate" value=@ViewData["MaxDate"] />
-		</div>
-		<button type="submit" class="btn btn-info my-2 my-sm-0">Filter</button>
-	</form>
-</nav>
+	</div>
+</div>
 
 <div class="card mb-3">
 	<div class="card-header text-white bg-info">
 		<h3>Total Sales = $ @Model.Sum(obj => obj.Ammount).ToString("F2")</h3>
 	</div>
 	<div class="card-body">
-		<table class="table table-striped table-hover">
-			<thead>
-				<tr class="table-primary">
-					<th>
-						@Html.DisplayNameFor(model => model.Date)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.Seller)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.Seller.Department)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.Ammount)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.Status)
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (var item in Model)
-				{
-					<tr>
-						<td>
-							@Html.DisplayFor(modelItem => item.Date)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.Seller.Name)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.Seller.Department.Name)
-						</td>
-						<td>
-							$ @Html.DisplayFor(modelItem => item.Ammount)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.Status)
-						</td>
+		<div class="table-responsive">
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr class="table-primary">
+						<th>
+							@Html.DisplayNameFor(model => model.Date)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Seller)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Seller.Department)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Ammount)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Status)
+						</th>
 					</tr>
-				}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								@Html.DisplayFor(modelItem => item.Date)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Seller.Name)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Seller.Department.Name)
+							</td>
+							<td>
+								$ @Html.DisplayFor(modelItem => item.Ammount)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Status)
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>
