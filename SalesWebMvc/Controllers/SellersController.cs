@@ -30,18 +30,18 @@ namespace SalesWebMvc.Controllers
 		public async Task<IActionResult> Details(int? id)
 		{
 			if (id == null)
-                return RedirectToAction(nameof(Error), new { message = "Id not provided!" });
+				return RedirectToAction(nameof(Error), new { message = "Id not provided!" });
 
-            try
+			try
 			{
 				var seller = await _sellerService.FindByIdWithDepartmentAsync(id.Value);
 
 				return View(seller);
 			}
 			catch (NotFoundException ex)
-            {
-                return RedirectToAction(nameof(Error), new { message = ex.Message });
-            }
+			{
+				return RedirectToAction(nameof(Error), new { message = ex.Message });
+			}
 		}
 
 		// GET: Sellers/Create
@@ -60,7 +60,7 @@ namespace SalesWebMvc.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await _sellerService.AddAsync(seller);
+				await _sellerService.CreateAsync(seller);
 
 				return RedirectToAction(nameof(Index));
 			}
@@ -75,9 +75,9 @@ namespace SalesWebMvc.Controllers
 		public async Task<IActionResult> Edit(int? id)
 		{
 			if (id == null)
-                return RedirectToAction(nameof(Error), new { message = "Id not provided!" });
+				return RedirectToAction(nameof(Error), new { message = "Id not provided!" });
 
-            try
+			try
 			{
 				Seller seller = await _sellerService.FindByIdAsync(id.Value);
 				var departments = _departmentService.FindAllAsync();
@@ -86,9 +86,9 @@ namespace SalesWebMvc.Controllers
 				return View(viewModel);
 			}
 			catch (NotFoundException ex)
-            {
-                return RedirectToAction(nameof(Error), new { message = ex.Message });
-            }
+			{
+				return RedirectToAction(nameof(Error), new { message = ex.Message });
+			}
 		}
 
 		// POST: Sellers/Edit/5
@@ -97,14 +97,14 @@ namespace SalesWebMvc.Controllers
 		public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,BirthDate,BaseSalary,DepartmentId")] Seller seller)
 		{
 			if (id != seller.Id)
-                return RedirectToAction(nameof(Error), new { message = "Id mismatch!" });
+				return RedirectToAction(nameof(Error), new { message = "Id mismatch!" });
 
-            try
+			try
 			{
 				if (ModelState.IsValid)
 				{
 					await _sellerService.UpdateAsync(seller);
-				
+
 					return RedirectToAction(nameof(Index));
 				}
 
@@ -114,9 +114,9 @@ namespace SalesWebMvc.Controllers
 				return View(viewModel);
 			}
 			catch (ApplicationException ex)
-            {
-                return RedirectToAction(nameof(Error), new { message = ex.Message });
-            }
+			{
+				return RedirectToAction(nameof(Error), new { message = ex.Message });
+			}
 		}
 
 		// GET: Sellers/Delete/5
@@ -133,7 +133,7 @@ namespace SalesWebMvc.Controllers
 			}
 			catch (NotFoundException ex)
 			{
-                return RedirectToAction(nameof(Error), new { message = ex.Message }); ;
+				return RedirectToAction(nameof(Error), new { message = ex.Message }); ;
 			}
 		}
 
@@ -142,9 +142,16 @@ namespace SalesWebMvc.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
-			await _sellerService.DeleteAsync(id);
+			try
+			{
+				await _sellerService.DeleteAsync(id);
 
-			return RedirectToAction(nameof(Index));
+				return RedirectToAction(nameof(Index));
+			}
+			catch (IntegrityException ex)
+			{
+				return RedirectToAction(nameof(Error), new { message = ex.Message });
+			}
 		}
 
 		public IActionResult Error(string message)

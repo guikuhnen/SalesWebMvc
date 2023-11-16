@@ -55,7 +55,7 @@ namespace SalesWebMvc.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await _departmentService.AddAsync(department);
+				await _departmentService.CreateAsync(department);
 
 				return RedirectToAction(nameof(Index));
 			}

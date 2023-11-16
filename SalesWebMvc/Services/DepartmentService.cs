@@ -31,7 +31,7 @@ namespace SalesWebMvc.Services
 			return department ?? throw new NotFoundException("Unable to find Department with provided ID!");
 		}
 
-		public async Task AddAsync(Department department)
+		public async Task CreateAsync(Department department)
 		{
 			_context.Add(department);
 

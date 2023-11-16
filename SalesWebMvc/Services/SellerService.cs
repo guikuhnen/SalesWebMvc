@@ -46,7 +46,7 @@ namespace SalesWebMvc.Services
 			return seller ?? throw new NotFoundException("Unable to find Seller with provided ID!");
 		}
 
-		public async Task AddAsync(Seller seller)
+		public async Task CreateAsync(Seller seller)
 		{
 			_context.Add(seller);
 
@@ -78,11 +78,18 @@ namespace SalesWebMvc.Services
 
 		public async Task DeleteAsync(int id)
 		{
-			var seller = await FindByIdAsync(id);
+			try
+			{
+				var seller = await FindByIdAsync(id);
 
-			_context.Seller.Remove(seller);
+				_context.Seller.Remove(seller);
 
-			await _context.SaveChangesAsync();
+				await _context.SaveChangesAsync();
+			}
+			catch (DbUpdateException)
+			{
+				throw new IntegrityException("Cannot remove seller because there are related sales!");
+			}
 		}
 	}
 }
