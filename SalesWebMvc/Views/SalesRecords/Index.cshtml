@@ -1,4 +1,4 @@
-﻿@model SalesWebMvc.Models.SalesRecord
+﻿@model SalesWebMvc.Models.ViewModels.SalesRecordViewModel
 
 @{
 	ViewData["Title"] = "Sales Records";
@@ -19,12 +19,12 @@
 		<form asp-action="SimpleSearch">
 			<legend>Simple search</legend>
 			<div class="form-group">
-				<label for="minDate" class="control-label">Min Date</label>
-				<input type="date" name="minDate" class="form-control" />
+				<label asp-for="MinDate" class="control-label"></label>
+				<input asp-for="MinDate" class="form-control" type="date" />
 			</div>
 			<div class="form-group">
-				<label for="maxDate" class="control-label">Max Date</label>
-				<input type="date" name="maxDate" class="form-control" />
+				<label asp-for="MaxDate" class="control-label"></label>
+				<input asp-for="MaxDate" class="form-control" type="date" />
 			</div>
 			<div class="form-group">
 				<input type="submit" value="Search" class="btn btn-primary" />
@@ -38,12 +38,12 @@
 		<form asp-action="GroupingSearch">
 			<legend>Grouping search</legend>
 			<div class="form-group">
-				<label for="minDate" class="control-label">Min Date</label>
-				<input type="date" name="minDate" class="form-control" />
+				<label asp-for="MinDate" class="control-label"></label>
+				<input asp-for="MinDate" class="form-control" type="date" />
 			</div>
 			<div class="form-group">
-				<label for="maxDate" class="control-label">Max Date</label>
-				<input type="date" name="maxDate" class="form-control" />
+				<label asp-for="MaxDate" class="control-label"></label>
+				<input asp-for="MaxDate" class="form-control" type="date" />
 			</div>
 			<div class="form-group">
 				<input type="submit" value="Search" class="btn btn-primary" />
