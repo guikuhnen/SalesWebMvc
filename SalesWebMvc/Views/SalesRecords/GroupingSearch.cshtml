@@ -1,7 +1,9 @@
-﻿@model IEnumerable<SalesWebMvc.Models.SalesRecord>
+﻿@model IEnumerable<IGrouping<Department, SalesRecord>>
 
 @{
 	ViewData["Title"] = "Grouping Search";
+	DateTime minDate = DateTime.Parse(ViewData["MinDate"] as string);
+	DateTime maxDate = DateTime.Parse(ViewData["MaxDate"] as string);
 }
 
 <div class="container mb-3">
@@ -29,54 +31,50 @@
 	</form>
 </nav>
 
-<div class="card mb-3">
-	<div class="card-header text-white bg-info">
-		<h3 class="panel-title">Total Sales = $ @Model.Sum(obj => obj.Ammount).ToString("F2")</h3>
-	</div>
-	<div class="card-body">
-		<table class="table table-striped table-hover">
-			<thead>
-				<tr class="table-primary">
-					<th>
-						@Html.DisplayNameFor(model => model.Date)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.Seller)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.Seller.Department)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.Ammount)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.Status)
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (var item in Model)
-				{
-					<tr>
-						<td>
-							@Html.DisplayFor(modelItem => item.Date)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.Seller.Name)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.Seller.Department.Name)
-						</td>
-						<td>
-							$ @Html.DisplayFor(modelItem => item.Ammount)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.Status)
-						</td>
+@foreach (var departmentGroup in Model)
+{
+	<div class="card mb-3">
+		<div class="card-header text-white bg-info">
+			<h3>Department @departmentGroup.Key.Name, Total Sales = $ @departmentGroup.Key.TotalSales(minDate, maxDate).ToString("F2")</h3>
+		</div>
+		<div class="card-body">
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr class="table-primary">
+						<th>
+							Date
+						</th>
+						<th>
+							Amount
+						</th>
+						<th>
+							Seller
+						</th>
+						<th>
+							Status
+						</th>
 					</tr>
-				}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					@foreach (var item in departmentGroup)
+					{
+						<tr>
+							<td>
+								@Html.DisplayFor(modelItem => item.Date)
+							</td>
+							<td>
+								$ @Html.DisplayFor(modelItem => item.Ammount)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Seller.Name)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Status)
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
 	</div>
-</div>
-
+}
