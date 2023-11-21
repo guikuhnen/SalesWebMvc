@@ -7,14 +7,9 @@ using System.Threading.Tasks;
 
 namespace SalesWebMvc.Controllers
 {
-	public class SalesRecordsController : Controller
+	public class SalesRecordsController(SalesRecordService salesRecordService) : Controller
 	{
-		private readonly SalesRecordService _salesRecordService;
-
-		public SalesRecordsController(SalesRecordService salesRecordService)
-		{
-			_salesRecordService = salesRecordService;
-		}
+		private readonly SalesRecordService _salesRecordService = salesRecordService;
 
 		// GET: SalesRecords
 		public IActionResult Index()

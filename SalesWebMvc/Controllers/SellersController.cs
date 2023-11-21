@@ -9,16 +9,10 @@ using SalesWebMvc.Services.Exceptions;
 
 namespace SalesWebMvc.Controllers
 {
-	public class SellersController : Controller
+	public class SellersController(SellerService sellerService, DepartmentService departmentService) : Controller
 	{
-		private readonly SellerService _sellerService;
-		private readonly DepartmentService _departmentService;
-
-		public SellersController(SellerService sellerService, DepartmentService departmentService)
-		{
-			_sellerService = sellerService;
-			_departmentService = departmentService;
-		}
+		private readonly SellerService _sellerService = sellerService;
+		private readonly DepartmentService _departmentService = departmentService;
 
 		// GET: Sellers
 		public async Task<IActionResult> Index()
