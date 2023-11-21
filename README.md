@@ -5,9 +5,9 @@ Sistema Web com ASP .NET Core MVC e Entity Framework.
 
 ## Tecnologias e frameworks utilizados
 
-- .Net Core 3.1
-- ASP .Net Core 3.1
-- Bootstrap 4.5
+- .Net Core 8.0
+- ASP .Net Core 8.0
+- Bootstrap 4.3.1
 - Entity Framework Core
 
 <br/>
