@@ -52,7 +52,9 @@ namespace SalesWebMvc
             };
             app.UseRequestLocalization(localizationOptions);
 
-            if (env.IsDevelopment())
+			UpdateDatabase(app);
+
+			if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 seedingService.Seed();
@@ -63,7 +65,8 @@ namespace SalesWebMvc
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
+
+			app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -76,6 +79,26 @@ namespace SalesWebMvc
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-        }
-    }
+
+			Console.WriteLine("A aplicação está pronta para uso!");
+		}
+
+		private void UpdateDatabase(IApplicationBuilder app)
+		{
+			Console.WriteLine("Criando a base de dados, por favor aguarde...");
+
+			using (var serviceScope = app.ApplicationServices
+				.GetRequiredService<IServiceScopeFactory>()
+				.CreateScope())
+			{
+				using (var context = serviceScope.ServiceProvider.GetService<SalesWebMvcContext>())
+				{
+					if (!context.Database.CanConnect())
+						context.Database.Migrate();
+				}
+			}
+
+			Console.WriteLine("Base de dados criada com sucesso!");
+		}
+	}
 }

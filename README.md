@@ -14,8 +14,11 @@ Sistema Web com ASP .NET Core MVC e Entity Framework.
 
 ## Executando
 
-- Para rodar o programa é necessário criar o banco de dados primeiro, abrindo a solução e utilizando o comando "Update-Database" dentro do "Package Manager Console".
-- O programa está configurado para utiliziar o (localdb)\\mssqllocaldb com acesso do usuário padrão do Windows.
+- O programa está configurado para utiliziar o ```(localdb)\\mssqllocaldb``` com acesso do usuário padrão do Windows.
+- A base de dados será criada e populada em tempo da primeira execução.
+
+1. Para rodar o projeto acesse a pasta do PROJETO SalesWebMvc (SalesWebMvc\SalesWebMvc), abra um terminal (cmd) e execute o comando: ```dotnet run``` ;
+2. No navegador abra o link: https://localhost:5001.
 
 <br/>
 
